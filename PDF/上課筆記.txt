@@ -1,0 +1,68 @@
+
+上課程式碼
+https://github.com/vincenttuan/JavaWeb1122_T
+
+Apache NetBeans Download
+https://netbeans.apache.org/download/index.html
+
+TomEE 8 Download
+https://www.apache.org/dyn/closer.cgi/tomee/tomee-8.0.0/apache-tomee-8.0.0-webprofile.zip
+
+Pure CSS
+https://purecss.io/
+
+Google Chart
+https://developers-dot-devsite-v2-prod.appspot.com/chart/interactive/docs/gallery/piechart
+
+Derby 資料庫
+db-derby-10.14.2.0-bin.zip
+
+1.請解壓縮至 C:\
+
+2.在 C:\db-derby-10.14.2.0-bin\databases <- 建立 databases 目錄
+
+最新SQL語法範例字典
+https://www.books.com.tw/products/0010772670
+
+SQL Sample:
+
+SELECT d.DISCOUNT_CODE FROM APP.DISCOUNT_CODE d 
+WHERE d.RATE >= 10;
+
+SELECT * FROM APP.CUSTOMER c
+WHERE c.DISCOUNT_CODE in ('H', 'M');
+
+SELECT * FROM APP.CUSTOMER c
+WHERE c.DISCOUNT_CODE in (SELECT d.DISCOUNT_CODE FROM APP.DISCOUNT_CODE d WHERE d.RATE >= 10)
+
+-- 總金額
+SELECT SUM(pu.QUANTITY * pr.PURCHASE_COST) as subtotal 
+FROM APP.PURCHASE_ORDER pu, APP.PRODUCT pr
+WHERE pu.CUSTOMER_ID = 36 AND pu.PRODUCT_ID = pr.PRODUCT_ID;
+
+-- 總金額 * 折扣
+SELECT SUM(pu.QUANTITY * pr.PURCHASE_COST) * (100-(SELECT d.RATE FROM APP.DISCOUNT_CODE d WHERE d.DISCOUNT_CODE in (SELECT c.DISCOUNT_CODE FROM APP.CUSTOMER c WHERE c.CUSTOMER_ID = 36)))/100 as subtotal 
+FROM APP.PURCHASE_ORDER pu, APP.PRODUCT pr
+WHERE pu.CUSTOMER_ID = 36 AND pu.PRODUCT_ID = pr.PRODUCT_ID;
+
+http://192.168.1.180:8080/JavaWeb1122_T/servlet/AuthCodeServlet
+
+-- SQL Select
+SELECT 
+product_id, purchase_cost, quantity_on_hand, (purchase_cost*quantity_on_hand) as subtotal, description
+FROM product
+
+-- View : PU_VIEW
+SELECT 
+    pu.ORDER_NUM, cu."NAME" as CUSTOMER_NAME, pu.PRODUCT_ID, pr.DESCRIPTION as PRODUCT_NAME,
+    pr.PURCHASE_COST, di.RATE, pu.QUANTITY,
+    CAST((100-di.RATE)/100 * pr.PURCHASE_COST * pu.QUANTITY as DOUBLE) as SUBTOTAL
+FROM 
+    APP.PURCHASE_ORDER pu
+LEFT JOIN APP.CUSTOMER cu ON pu.CUSTOMER_ID = cu.CUSTOMER_ID
+LEFT JOIN APP.PRODUCT pr ON pu.PRODUCT_ID = pr.PRODUCT_ID
+LEFT JOIN APP.DISCOUNT_CODE di ON cu.DISCOUNT_CODE = di.DISCOUNT_CODE
+
+
+
+
